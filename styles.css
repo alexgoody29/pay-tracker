@@ -73,7 +73,7 @@ button {
     width: 100%;
     max-width: 900px;
     margin: 0 auto;
-    padding: 38px 20px 48px;
+    padding: 38px 20px 60px;
 }
 
 .summary-card {
@@ -109,9 +109,13 @@ button {
 }
 
 .section-title {
-    margin: 0 0 16px;
+    margin: 0;
     font-size: 24px;
     line-height: 1.2;
+}
+
+.employer-section .section-title {
+    margin-bottom: 16px;
 }
 
 .employer-card {
@@ -171,7 +175,7 @@ button {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .form-card {
@@ -195,8 +199,13 @@ button {
 }
 
 .close-button {
-    width: 40px;
-    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    padding: 0;
     border: none;
     border-radius: 50%;
     background: #eef2f7;
@@ -207,19 +216,24 @@ button {
 
 form {
     display: grid;
-    gap: 12px;
+    gap: 18px;
+}
+
+.form-field {
+    display: grid;
+    gap: 8px;
 }
 
 label {
-    margin-top: 4px;
     font-size: 15px;
     font-weight: 700;
 }
 
 input,
 select {
+    display: block;
     width: 100%;
-    min-height: 50px;
+    min-height: 52px;
     padding: 12px 14px;
     border: 1px solid #d5dce5;
     border-radius: 12px;
@@ -237,16 +251,114 @@ select:focus {
 .time-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-.time-grid div {
-    display: grid;
-    gap: 12px;
+    gap: 14px;
 }
 
 .save-shift-button {
-    margin-top: 12px;
+    margin-top: 4px;
+}
+
+.form-message {
+    margin: 0;
+    padding: 12px 14px;
+    border-radius: 10px;
+    background: #e8f2ff;
+    color: #0f4d91;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.form-message.error {
+    background: #fff0f0;
+    color: #b42318;
+}
+
+.recent-shifts-section {
+    margin-top: 36px;
+}
+
+.recent-shifts-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.clear-button {
+    padding: 8px 12px;
+    border: none;
+    border-radius: 10px;
+    background: #e9edf3;
+    color: #4b5563;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+.empty-state {
+    padding: 24px 20px;
+    border: 1px dashed #cbd5e1;
+    border-radius: 16px;
+    text-align: center;
+}
+
+.empty-state p {
+    margin: 0;
+    color: #6b7280;
+}
+
+.shift-card {
+    margin-bottom: 14px;
+    padding: 18px;
+    background: #ffffff;
+    border-radius: 18px;
+    box-shadow: 0 3px 14px rgba(15, 23, 42, 0.07);
+}
+
+.shift-card-top {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+}
+
+.shift-card h3 {
+    margin: 0 0 6px;
+    font-size: 18px;
+}
+
+.shift-date {
+    margin: 0;
+    color: #6b7280;
+    font-size: 14px;
+}
+
+.shift-hours {
+    flex-shrink: 0;
+    color: #1565c0;
+    font-size: 17px;
+    font-weight: 800;
+}
+
+.shift-details {
+    margin: 16px 0 0;
+    padding-top: 14px;
+    border-top: 1px solid #edf0f4;
+    color: #4b5563;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.delete-shift-button {
+    width: 100%;
+    margin-top: 14px;
+    padding: 11px 14px;
+    border: none;
+    border-radius: 11px;
+    background: #fff0f0;
+    color: #b42318;
+    font-size: 14px;
+    font-weight: 700;
 }
 
 @media (max-width: 440px) {
@@ -265,6 +377,6 @@ select:focus {
     }
 
     .app-content {
-        padding: 48px 32px 64px;
+        padding: 48px 32px 70px;
     }
 }
