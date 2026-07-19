@@ -2,58 +2,83 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
     <title>Pay Tracker</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <link rel="stylesheet" href="styles.css?v=3">
 </head>
+
 <body>
 
-<header class="app-header">
-    <div class="brand">
-        <h1>Pay Tracker</h1>
-        <p>Your work. Your pay. Your time.</p>
-    </div>
+    <header class="app-header">
 
-    <button class="settings-button" type="button">
-        Settings
-    </button>
-</header>
-<main class="app-content">
-
-    <div class="card">
-        <p class="section-label">Current fortnight</p>
-        <h2>$0.00</h2>
-        <p>Estimated gross pay</p>
-    </div>
-
-    <section class="employer-section">
-        <h2>Employers</h2>
-
-        <div class="employer-card">
-            <div>
-                <h3>SeaWorld</h3>
-                <p>No shifts added</p>
-            </div>
-
-            <strong>$0.00</strong>
+        <div class="brand">
+            <h1>Pay Tracker</h1>
+            <p>Your work. Your pay. Your time.</p>
         </div>
 
-        <div class="employer-card">
-            <div>
-                <h3>Queensland Health</h3>
-                <p>No shifts added</p>
-            </div>
+        <button class="settings-button" type="button">
+            Settings
+        </button>
 
-            <strong>$0.00</strong>
-        </div>
-    </section>
+    </header>
 
-    <button class="add-shift-button" type="button">
-        + Add Shift
-    </button>
+    <main class="app-content">
 
-</main>
+        <section class="summary-card">
 
+            <p class="section-label">
+                Current fortnight
+            </p>
+
+            <h2>$0.00</h2>
+
+            <p class="summary-description">
+                Estimated gross pay
+            </p>
+
+        </section>
+
+        <section class="employer-section">
+
+            <h2 class="section-title">
+                Employers
+            </h2>
+
+            <article class="employer-card">
+
+                <div class="employer-details">
+                    <h3>SeaWorld</h3>
+                    <p>No shifts added</p>
+                </div>
+
+                <strong>$0.00</strong>
+
+            </article>
+
+            <article class="employer-card">
+
+                <div class="employer-details">
+                    <h3>Queensland Health</h3>
+                    <p>No shifts added</p>
+                </div>
+
+                <strong>$0.00</strong>
+
+            </article>
+
+        </section>
+
+        <button class="add-shift-button" type="button">
+            + Add Shift
+        </button>
+
+    </main>
 
 </body>
 </html>
