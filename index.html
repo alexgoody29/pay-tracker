@@ -1,251 +1,2395 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en-AU">
 <head>
-    <meta charset="UTF-8">
+  <meta charset="UTF-8">
 
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
 
-    <title>Pay Tracker</title>
+  <meta
+    name="description"
+    content="Track shifts, earnings, tax, superannuation and payroll across multiple jobs."
+  >
 
-    <link rel="stylesheet" href="styles.css?v=6">
+  <meta name="theme-color" content="#f7f9fc">
+
+  <title>Pay Tracker</title>
+
+  <link rel="stylesheet" href="styles.css">
 </head>
 
 <body>
+  <!-- =========================================================
+       APP LOADING SCREEN
+  ========================================================== -->
+  <div
+    id="loading-screen"
+    class="loading-screen"
+    aria-live="polite"
+    aria-label="Loading Pay Tracker"
+  >
+    <div class="loading-logo" aria-hidden="true">
+      <span class="loading-logo-symbol">$</span>
+    </div>
 
+    <p class="loading-title">Pay Tracker</p>
+    <p class="loading-message">Loading your payroll data…</p>
+  </div>
+
+
+  <!-- =========================================================
+       APP SHELL
+  ========================================================== -->
+  <div id="app" class="app-shell">
+
+    <!-- =======================================================
+         TOP HEADER
+    ======================================================== -->
     <header class="app-header">
-        <div class="brand">
-            <h1>Pay Tracker</h1>
-            <p>Your work. Your pay. Your time.</p>
-        </div>
+      <button
+        id="menu-button"
+        class="icon-button header-menu-button"
+        type="button"
+        aria-label="Open menu"
+        aria-controls="side-menu"
+        aria-expanded="false"
+      >
+        <span class="menu-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
 
-        <button class="settings-button" type="button">
-            Settings
-        </button>
+      <a
+        class="app-brand"
+        href="#home"
+        aria-label="Pay Tracker home"
+        data-route="home"
+      >
+        <span class="app-brand-icon" aria-hidden="true">$</span>
+        <span class="app-brand-name">Pay Tracker</span>
+      </a>
+
+      <button
+        id="header-settings-button"
+        class="icon-button header-settings-button"
+        type="button"
+        aria-label="Open settings"
+        data-route="settings"
+      >
+        <span aria-hidden="true">⚙</span>
+      </button>
     </header>
 
-    <main class="app-content">
 
-        <section class="summary-card">
-            <p class="section-label">Current fortnight</p>
-
-            <h2 id="total-pay">$0.00</h2>
-
-            <p class="summary-description">
-                Estimated gross pay
-            </p>
-        </section>
-
-        <section class="employer-section">
-            <h2 class="section-title">Employers</h2>
-
-            <article class="employer-card">
-                <div class="employer-details">
-                    <h3>SeaWorld</h3>
-
-                    <p id="seaworld-summary">
-                        No shifts added
-                    </p>
-                </div>
-
-                <strong id="seaworld-total">
-                    $0.00
-                </strong>
-            </article>
-
-            <article class="employer-card">
-                <div class="employer-details">
-                    <h3>Queensland Health</h3>
-
-                    <p id="health-summary">
-                        No shifts added
-                    </p>
-                </div>
-
-                <strong id="health-total">
-                    $0.00
-                </strong>
-            </article>
-        </section>
+    <!-- =======================================================
+         SIDE MENU
+    ======================================================== -->
+    <aside
+      id="side-menu"
+      class="side-menu"
+      aria-label="Main menu"
+      aria-hidden="true"
+    >
+      <div class="side-menu-header">
+        <div>
+          <p class="side-menu-eyebrow">Payroll dashboard</p>
+          <h2 class="side-menu-title">Pay Tracker</h2>
+        </div>
 
         <button
-            id="open-shift-form"
-            class="add-shift-button"
-            type="button"
+          id="close-menu-button"
+          class="icon-button"
+          type="button"
+          aria-label="Close menu"
         >
-            + Add Shift
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+
+      <nav class="side-menu-navigation" aria-label="Side navigation">
+        <button
+          class="side-menu-link is-active"
+          type="button"
+          data-route="home"
+        >
+          <span aria-hidden="true">⌂</span>
+          <span>Home</span>
         </button>
 
-        <section
-            id="shift-form-section"
-            class="shift-form-section hidden"
+        <button
+          class="side-menu-link"
+          type="button"
+          data-route="shifts"
         >
-            <div class="form-card">
+          <span aria-hidden="true">◷</span>
+          <span>Shifts</span>
+        </button>
 
-                <div class="form-heading">
-                    <div>
-                        <p class="section-label">New shift</p>
-                        <h2>Add Shift</h2>
-                    </div>
+        <button
+          class="side-menu-link"
+          type="button"
+          data-route="payroll"
+        >
+          <span aria-hidden="true">$</span>
+          <span>Payroll</span>
+        </button>
 
-                    <button
-                        id="close-shift-form"
-                        class="close-button"
-                        type="button"
-                        aria-label="Close form"
-                    >
-                        ×
-                    </button>
-                </div>
+        <button
+          class="side-menu-link"
+          type="button"
+          data-route="reports"
+        >
+          <span aria-hidden="true">▥</span>
+          <span>Reports</span>
+        </button>
 
-                <form id="shift-form">
+        <button
+          class="side-menu-link"
+          type="button"
+          data-route="settings"
+        >
+          <span aria-hidden="true">⚙</span>
+          <span>Settings</span>
+        </button>
+      </nav>
 
-                    <div class="form-field">
-                        <label for="employer">
-                            Employer
-                        </label>
+      <div class="side-menu-footer">
+        <p>Pay Tracker</p>
+        <p>Version 1.0</p>
+      </div>
+    </aside>
 
-                        <select
-                            id="employer"
-                            name="employer"
-                            required
-                        >
-                            <option value="">
-                                Select employer
-                            </option>
+    <button
+      id="menu-overlay"
+      class="menu-overlay"
+      type="button"
+      aria-label="Close menu"
+      tabindex="-1"
+    ></button>
 
-                            <option value="seaworld">
-                                SeaWorld
-                            </option>
 
-                            <option value="queensland-health">
-                                Queensland Health
-                            </option>
-                        </select>
-                    </div>
+    <!-- =======================================================
+         MAIN CONTENT
+    ======================================================== -->
+    <main class="app-main">
 
-                    <div class="form-field">
-                        <label for="shift-date">
-                            Date
-                        </label>
+      <!-- =====================================================
+           HOME SCREEN
+      ====================================================== -->
+      <section
+        id="home-screen"
+        class="app-screen is-active"
+        aria-labelledby="home-screen-title"
+        data-screen="home"
+      >
+        <h1 id="home-screen-title" class="visually-hidden">
+          Pay Tracker dashboard
+        </h1>
 
-                        <input
-                            id="shift-date"
-                            name="shiftDate"
-                            type="date"
-                            required
-                        >
-                    </div>
 
-                    <div class="time-grid">
+        <!-- CURRENT FORTNIGHT -->
+        <section
+          class="dashboard-card pay-period-card"
+          aria-labelledby="current-fortnight-title"
+        >
+          <div class="pay-period-icon" aria-hidden="true">▣</div>
 
-                        <div class="form-field">
-                            <label for="start-time">
-                                Start time
-                            </label>
+          <div class="pay-period-details">
+            <h2 id="current-fortnight-title">Current Fortnight</h2>
 
-                            <input
-                                id="start-time"
-                                name="startTime"
-                                type="time"
-                                required
-                            >
-                        </div>
+            <p id="current-pay-period-dates">
+              29 Jun – 12 Jul 2026
+            </p>
+          </div>
 
-                        <div class="form-field">
-                            <label for="finish-time">
-                                Finish time
-                            </label>
-
-                            <input
-                                id="finish-time"
-                                name="finishTime"
-                                type="time"
-                                required
-                            >
-                        </div>
-
-                    </div>
-
-                    <div class="form-field">
-                        <label for="break-minutes">
-                            Unpaid break
-                        </label>
-
-                        <select
-                            id="break-minutes"
-                            name="breakMinutes"
-                            required
-                        >
-                            <option value="0">
-                                No break
-                            </option>
-
-                            <option value="15">
-                                15 minutes
-                            </option>
-
-                            <option value="30">
-                                30 minutes
-                            </option>
-
-                            <option value="45">
-                                45 minutes
-                            </option>
-
-                            <option value="60">
-                                60 minutes
-                            </option>
-                        </select>
-                    </div>
-
-                    <p
-                        id="form-message"
-                        class="form-message hidden"
-                    ></p>
-
-                    <button
-                        class="save-shift-button"
-                        type="submit"
-                    >
-                        Save Shift
-                    </button>
-
-                </form>
-            </div>
+          <div
+            id="pay-period-countdown"
+            class="status-pill"
+            aria-label="Five days remaining in the current fortnight"
+          >
+            5 days to go
+          </div>
         </section>
 
-        <section class="recent-shifts-section">
-            <div class="recent-shifts-heading">
-                <h2 class="section-title">
-                    Recent Shifts
-                </h2>
+
+        <!-- TOTAL PAY SUMMARY -->
+        <section
+          class="dashboard-card total-pay-card"
+          aria-labelledby="total-pay-title"
+        >
+          <div class="total-pay-primary">
+            <p class="card-label">Total (All Jobs)</p>
+
+            <h2 id="total-pay-title" class="total-gross-pay">
+              <span class="currency-symbol">$</span>
+              <span id="total-gross-pay-value">2,485.62</span>
+            </h2>
+
+            <p class="total-pay-caption">Gross Pay</p>
+
+            <div
+              class="progress-track"
+              role="progressbar"
+              aria-label="Current fortnight progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow="68"
+            >
+              <div
+                id="fortnight-progress-bar"
+                class="progress-value"
+                style="width: 68%;"
+              ></div>
+            </div>
+
+            <p class="progress-caption">
+              <strong id="fortnight-progress-percentage">68%</strong>
+              <span>of fortnight</span>
+            </p>
+          </div>
+
+          <dl class="total-pay-statistics">
+            <div class="summary-stat">
+              <dt>Net Estimate</dt>
+              <dd id="total-net-pay-value">$1,996.11</dd>
+            </div>
+
+            <div class="summary-stat">
+              <dt>Tax Estimate</dt>
+              <dd id="total-tax-value">$489.51</dd>
+            </div>
+
+            <div class="summary-stat">
+              <dt>Super Estimate</dt>
+              <dd id="total-super-value">$286.84</dd>
+            </div>
+
+            <div class="summary-stat">
+              <dt>Hours Worked</dt>
+              <dd id="total-hours-value">38.25 hrs</dd>
+            </div>
+          </dl>
+        </section>
+
+
+        <!-- JOB PAY SUMMARY -->
+        <section
+          class="dashboard-section"
+          aria-labelledby="job-summary-title"
+        >
+          <div class="section-heading">
+            <div>
+              <p class="section-eyebrow">Income breakdown</p>
+              <h2 id="job-summary-title">Pay by Job</h2>
+            </div>
+
+            <button
+              class="text-button"
+              type="button"
+              data-route="payroll"
+            >
+              View all
+            </button>
+          </div>
+
+          <div
+            id="job-summary-grid"
+            class="job-summary-grid"
+            aria-live="polite"
+          >
+
+            <!-- JOB 1 -->
+            <article
+              id="employer-card-seaworld"
+              class="job-summary-card job-summary-card-blue"
+              data-employer-id="seaworld"
+            >
+              <div class="job-summary-header">
+                <div>
+                  <p class="job-number">Job 1</p>
+                  <h3 class="job-name">SeaWorld</h3>
+                </div>
+
+                <div
+                  class="job-logo job-logo-seaworld"
+                  aria-hidden="true"
+                >
+                  SW
+                </div>
+              </div>
+
+              <div class="job-pay-amount">
+                <p>Gross Pay</p>
+                <strong id="seaworld-gross-pay">$684.22</strong>
+              </div>
+
+              <dl class="job-summary-details">
+                <div>
+                  <dt>Hours</dt>
+                  <dd id="seaworld-hours">20.50 hrs</dd>
+                </div>
+
+                <div>
+                  <dt>Shifts</dt>
+                  <dd id="seaworld-shifts">5 shifts</dd>
+                </div>
+
+                <div>
+                  <dt>Tax withheld</dt>
+                  <dd id="seaworld-tax">$0.00</dd>
+                </div>
+              </dl>
+
+              <button
+                class="job-details-button"
+                type="button"
+                data-employer="seaworld"
+              >
+                <span>View details</span>
+                <span aria-hidden="true">›</span>
+              </button>
+            </article>
+
+
+            <!-- JOB 2 -->
+            <article
+              id="employer-card-queensland-health"
+              class="job-summary-card job-summary-card-green"
+              data-employer-id="queensland-health"
+            >
+              <div class="job-summary-header">
+                <div>
+                  <p class="job-number">Job 2</p>
+                  <h3 class="job-name">Queensland Health</h3>
+                </div>
+
+                <div
+                  class="job-logo job-logo-health"
+                  aria-hidden="true"
+                >
+                  +
+                </div>
+              </div>
+
+              <div class="job-pay-amount">
+                <p>Gross Pay</p>
+                <strong id="health-gross-pay">$1,801.40</strong>
+              </div>
+
+              <dl class="job-summary-details">
+                <div>
+                  <dt>Hours</dt>
+                  <dd id="health-hours">17.75 hrs</dd>
+                </div>
+
+                <div>
+                  <dt>Shifts</dt>
+                  <dd id="health-shifts">8 shifts</dd>
+                </div>
+
+                <div>
+                  <dt>Tax withheld</dt>
+                  <dd id="health-tax">$489.51</dd>
+                </div>
+              </dl>
+
+              <button
+                class="job-details-button"
+                type="button"
+                data-employer="queensland-health"
+              >
+                <span>View details</span>
+                <span aria-hidden="true">›</span>
+              </button>
+            </article>
+
+
+            <!-- ALL JOBS TOTAL -->
+            <article
+              id="all-jobs-summary-card"
+              class="job-summary-card job-summary-card-purple"
+            >
+              <div class="job-summary-header">
+                <div>
+                  <p class="job-number">Combined</p>
+                  <h3 class="job-name">Total All Jobs</h3>
+                </div>
+
+                <div
+                  class="job-logo job-logo-total"
+                  aria-hidden="true"
+                >
+                  $
+                </div>
+              </div>
+
+              <div class="job-pay-amount">
+                <p>Gross Pay</p>
+                <strong id="combined-gross-pay">$2,485.62</strong>
+              </div>
+
+              <dl class="job-summary-details">
+                <div>
+                  <dt>Hours</dt>
+                  <dd id="combined-hours">38.25 hrs</dd>
+                </div>
+
+                <div>
+                  <dt>Shifts</dt>
+                  <dd id="combined-shifts">13 shifts</dd>
+                </div>
+
+                <div>
+                  <dt>Estimated tax</dt>
+                  <dd id="combined-tax">$489.51</dd>
+                </div>
+              </dl>
+
+              <button
+                class="job-details-button"
+                type="button"
+                data-route="payroll"
+              >
+                <span>View breakdown</span>
+                <span aria-hidden="true">›</span>
+              </button>
+            </article>
+          </div>
+        </section>
+
+
+        <!-- TAX INFORMATION -->
+        <section
+          class="dashboard-card tax-overview-card"
+          aria-labelledby="tax-overview-title"
+        >
+          <div class="section-heading compact-section-heading">
+            <div>
+              <p class="section-eyebrow">Multiple-job tax tracking</p>
+              <h2 id="tax-overview-title">Tax Overview</h2>
+            </div>
+
+            <button
+              class="text-button"
+              type="button"
+              data-route="payroll"
+            >
+              Details
+            </button>
+          </div>
+
+          <dl class="tax-overview-grid">
+            <div class="tax-overview-item">
+              <dt>Job 1 tax</dt>
+              <dd id="job-one-tax-overview">$0.00</dd>
+            </div>
+
+            <div class="tax-overview-item">
+              <dt>Job 2 tax</dt>
+              <dd id="job-two-tax-overview">$489.51</dd>
+            </div>
+
+            <div class="tax-overview-item">
+              <dt>Total withheld</dt>
+              <dd id="total-withheld-overview">$489.51</dd>
+            </div>
+
+            <div class="tax-overview-item">
+              <dt>Combined estimate</dt>
+              <dd id="combined-tax-estimate-overview">$489.51</dd>
+            </div>
+          </dl>
+
+          <div
+            id="tax-status-message"
+            class="information-banner"
+            role="status"
+          >
+            <span class="information-banner-icon" aria-hidden="true">i</span>
+
+            <p>
+              Combined income is used to estimate whether enough tax is being
+              withheld across both jobs.
+            </p>
+          </div>
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+        <section
+          class="dashboard-section"
+          aria-labelledby="quick-actions-title"
+        >
+          <div class="section-heading">
+            <h2 id="quick-actions-title">Quick Actions</h2>
+          </div>
+
+          <div class="quick-actions-grid">
+            <button
+              id="quick-add-shift-button"
+              class="quick-action-card quick-action-blue"
+              type="button"
+              data-open-modal="add-shift-modal"
+            >
+              <span class="quick-action-icon" aria-hidden="true">+</span>
+              <span class="quick-action-label">Add Shift</span>
+            </button>
+
+            <button
+              id="quick-scan-payslip-button"
+              class="quick-action-card quick-action-green"
+              type="button"
+              data-open-modal="scan-payslip-modal"
+            >
+              <span class="quick-action-icon" aria-hidden="true">▤</span>
+              <span class="quick-action-label">Scan Payslip</span>
+            </button>
+
+            <button
+              class="quick-action-card quick-action-purple"
+              type="button"
+              data-route="reports"
+            >
+              <span class="quick-action-icon" aria-hidden="true">▥</span>
+              <span class="quick-action-label">Reports</span>
+            </button>
+
+            <button
+              class="quick-action-card quick-action-orange"
+              type="button"
+              data-route="settings"
+            >
+              <span class="quick-action-icon" aria-hidden="true">⚙</span>
+              <span class="quick-action-label">Settings</span>
+            </button>
+          </div>
+        </section>
+
+
+        <!-- RECENT SHIFTS -->
+        <section
+          class="dashboard-section"
+          aria-labelledby="recent-shifts-title"
+        >
+          <div class="section-heading">
+            <h2 id="recent-shifts-title">Recent Shifts</h2>
+
+            <button
+              class="text-button"
+              type="button"
+              data-route="shifts"
+            >
+              View all
+            </button>
+          </div>
+
+          <div
+            id="recent-shifts-list"
+            class="recent-shifts-list"
+            aria-live="polite"
+          >
+            <article
+              class="recent-shift-card"
+              data-shift-id="example-health-shift"
+            >
+              <div class="shift-date shift-date-green">
+                <span class="shift-day-name">Mon</span>
+                <strong class="shift-day-number">6</strong>
+                <span class="shift-month">Jul</span>
+              </div>
+
+              <div class="shift-information">
+                <h3>Queensland Health</h3>
+
+                <p>
+                  <span>8:00 am – 4:00 pm</span>
+                  <span aria-hidden="true">•</span>
+                  <span>8.00 hrs</span>
+                </p>
+
+                <p>No unpaid break</p>
+              </div>
+
+              <div class="shift-earnings">
+                <strong>$375.84</strong>
 
                 <button
-                    id="clear-shifts-button"
-                    class="clear-button hidden"
-                    type="button"
+                  class="shift-details-button"
+                  type="button"
+                  aria-label="View Queensland Health shift details"
+                  data-shift-id="example-health-shift"
                 >
-                    Clear all
+                  <span aria-hidden="true">›</span>
                 </button>
-            </div>
+              </div>
+            </article>
 
-            <div id="shift-list">
-                <div class="empty-state">
-                    <p>No shifts have been saved yet.</p>
-                </div>
-            </div>
+            <article
+              class="recent-shift-card"
+              data-shift-id="example-seaworld-shift"
+            >
+              <div class="shift-date shift-date-blue">
+                <span class="shift-day-name">Sat</span>
+                <strong class="shift-day-number">11</strong>
+                <span class="shift-month">Jul</span>
+              </div>
+
+              <div class="shift-information">
+                <h3>SeaWorld</h3>
+
+                <p>
+                  <span>5:30 pm – 5:00 am</span>
+                  <span aria-hidden="true">•</span>
+                  <span>11.50 hrs</span>
+                </p>
+
+                <p>30 min unpaid break</p>
+              </div>
+
+              <div class="shift-earnings">
+                <strong>$621.48</strong>
+
+                <button
+                  class="shift-details-button"
+                  type="button"
+                  aria-label="View SeaWorld shift details"
+                  data-shift-id="example-seaworld-shift"
+                >
+                  <span aria-hidden="true">›</span>
+                </button>
+              </div>
+            </article>
+          </div>
+
+          <div id="recent-shifts-empty-state" class="empty-state" hidden>
+            <div class="empty-state-icon" aria-hidden="true">◷</div>
+            <h3>No shifts added yet</h3>
+            <p>Add your first shift to begin tracking your earnings.</p>
+
+            <button
+              class="primary-button"
+              type="button"
+              data-open-modal="add-shift-modal"
+            >
+              Add your first shift
+            </button>
+          </div>
+        </section>
+      </section>
+
+
+      <!-- =====================================================
+           SHIFTS SCREEN
+      ====================================================== -->
+      <section
+        id="shifts-screen"
+        class="app-screen"
+        aria-labelledby="shifts-screen-title"
+        data-screen="shifts"
+        hidden
+      >
+        <div class="screen-header">
+          <div>
+            <p class="screen-eyebrow">Time and attendance</p>
+            <h1 id="shifts-screen-title">Shifts</h1>
+          </div>
+
+          <button
+            class="primary-button compact-button"
+            type="button"
+            data-open-modal="add-shift-modal"
+          >
+            <span aria-hidden="true">+</span>
+            Add Shift
+          </button>
+        </div>
+
+        <section class="filter-card" aria-label="Shift filters">
+          <div class="form-field">
+            <label for="shift-filter-employer">Employer</label>
+
+            <select id="shift-filter-employer">
+              <option value="all">All jobs</option>
+              <option value="seaworld">SeaWorld</option>
+              <option value="queensland-health">
+                Queensland Health
+              </option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="shift-filter-period">Period</label>
+
+            <select id="shift-filter-period">
+              <option value="current-fortnight">Current fortnight</option>
+              <option value="previous-fortnight">Previous fortnight</option>
+              <option value="current-month">Current month</option>
+              <option value="all-time">All time</option>
+            </select>
+          </div>
         </section>
 
+        <section
+          class="screen-content-card"
+          aria-labelledby="all-shifts-title"
+        >
+          <div class="section-heading">
+            <h2 id="all-shifts-title">All Shifts</h2>
+
+            <p id="shift-count-label">13 shifts</p>
+          </div>
+
+          <div id="all-shifts-list" class="all-shifts-list"></div>
+
+          <div id="all-shifts-empty-state" class="empty-state" hidden>
+            <div class="empty-state-icon" aria-hidden="true">◷</div>
+            <h3>No matching shifts</h3>
+            <p>Try changing the selected employer or pay period.</p>
+          </div>
+        </section>
+      </section>
+
+
+      <!-- =====================================================
+           PAYROLL SCREEN
+      ====================================================== -->
+      <section
+        id="payroll-screen"
+        class="app-screen"
+        aria-labelledby="payroll-screen-title"
+        data-screen="payroll"
+        hidden
+      >
+        <div class="screen-header">
+          <div>
+            <p class="screen-eyebrow">Income and deductions</p>
+            <h1 id="payroll-screen-title">Payroll</h1>
+          </div>
+        </div>
+
+        <section class="dashboard-card payroll-total-card">
+          <p class="card-label">Combined Gross Income</p>
+
+          <p class="large-money-value" id="payroll-combined-gross">
+            $2,485.62
+          </p>
+
+          <p class="secondary-caption">
+            Current fortnight across all jobs
+          </p>
+        </section>
+
+        <section class="dashboard-section">
+          <div class="section-heading">
+            <h2>Job Breakdown</h2>
+          </div>
+
+          <div id="payroll-job-breakdown" class="payroll-job-breakdown">
+            <article class="payroll-breakdown-card">
+              <div class="payroll-breakdown-heading">
+                <div>
+                  <p class="job-number">Job 1</p>
+                  <h3>SeaWorld</h3>
+                </div>
+
+                <span class="colour-dot colour-dot-blue"></span>
+              </div>
+
+              <dl class="payroll-breakdown-list">
+                <div>
+                  <dt>Gross pay</dt>
+                  <dd>$684.22</dd>
+                </div>
+
+                <div>
+                  <dt>Tax withheld</dt>
+                  <dd>$0.00</dd>
+                </div>
+
+                <div>
+                  <dt>Super</dt>
+                  <dd>$78.69</dd>
+                </div>
+
+                <div>
+                  <dt>Estimated net</dt>
+                  <dd>$684.22</dd>
+                </div>
+              </dl>
+            </article>
+
+            <article class="payroll-breakdown-card">
+              <div class="payroll-breakdown-heading">
+                <div>
+                  <p class="job-number">Job 2</p>
+                  <h3>Queensland Health</h3>
+                </div>
+
+                <span class="colour-dot colour-dot-green"></span>
+              </div>
+
+              <dl class="payroll-breakdown-list">
+                <div>
+                  <dt>Gross pay</dt>
+                  <dd>$1,801.40</dd>
+                </div>
+
+                <div>
+                  <dt>Tax withheld</dt>
+                  <dd>$489.51</dd>
+                </div>
+
+                <div>
+                  <dt>Super</dt>
+                  <dd>$208.15</dd>
+                </div>
+
+                <div>
+                  <dt>Estimated net</dt>
+                  <dd>$1,311.89</dd>
+                </div>
+              </dl>
+            </article>
+          </div>
+        </section>
+
+        <section
+          class="dashboard-card tax-comparison-card"
+          aria-labelledby="tax-comparison-title"
+        >
+          <div class="section-heading compact-section-heading">
+            <div>
+              <p class="section-eyebrow">Tax safety check</p>
+              <h2 id="tax-comparison-title">Combined Tax Position</h2>
+            </div>
+          </div>
+
+          <dl class="tax-comparison-list">
+            <div>
+              <dt>Total tax withheld by employers</dt>
+              <dd id="tax-withheld-by-employers">$489.51</dd>
+            </div>
+
+            <div>
+              <dt>Estimated tax on combined income</dt>
+              <dd id="estimated-combined-income-tax">$489.51</dd>
+            </div>
+
+            <div class="tax-comparison-result">
+              <dt>Estimated difference</dt>
+              <dd id="estimated-tax-difference">$0.00</dd>
+            </div>
+          </dl>
+
+          <div class="information-banner">
+            <span class="information-banner-icon" aria-hidden="true">i</span>
+
+            <p id="combined-tax-guidance">
+              Your current withholding is approximately aligned with the
+              combined income estimate.
+            </p>
+          </div>
+        </section>
+      </section>
+
+
+      <!-- =====================================================
+           REPORTS SCREEN
+      ====================================================== -->
+      <section
+        id="reports-screen"
+        class="app-screen"
+        aria-labelledby="reports-screen-title"
+        data-screen="reports"
+        hidden
+      >
+        <div class="screen-header">
+          <div>
+            <p class="screen-eyebrow">Earnings insights</p>
+            <h1 id="reports-screen-title">Reports</h1>
+          </div>
+        </div>
+
+        <section class="report-period-tabs" aria-label="Report period">
+          <button
+            class="report-period-button is-active"
+            type="button"
+            data-period="fortnight"
+          >
+            Fortnight
+          </button>
+
+          <button
+            class="report-period-button"
+            type="button"
+            data-period="month"
+          >
+            Month
+          </button>
+
+          <button
+            class="report-period-button"
+            type="button"
+            data-period="year"
+          >
+            Year
+          </button>
+        </section>
+
+        <section class="dashboard-card">
+          <div class="section-heading">
+            <h2>Earnings Summary</h2>
+          </div>
+
+          <div
+            id="earnings-chart"
+            class="chart-placeholder"
+            role="img"
+            aria-label="Earnings chart will appear here"
+          >
+            <p>Earnings chart</p>
+          </div>
+        </section>
+
+        <section class="report-options-grid">
+          <button class="report-option-card" type="button">
+            <span aria-hidden="true">$</span>
+            <strong>Income Summary</strong>
+            <small>Gross and net earnings</small>
+          </button>
+
+          <button class="report-option-card" type="button">
+            <span aria-hidden="true">%</span>
+            <strong>Tax Summary</strong>
+            <small>Withholding by employer</small>
+          </button>
+
+          <button class="report-option-card" type="button">
+            <span aria-hidden="true">◷</span>
+            <strong>Hours Worked</strong>
+            <small>Hours and overtime</small>
+          </button>
+
+          <button class="report-option-card" type="button">
+            <span aria-hidden="true">+</span>
+            <strong>Penalty Breakdown</strong>
+            <small>Allowances and loadings</small>
+          </button>
+
+          <button class="report-option-card" type="button">
+            <span aria-hidden="true">S</span>
+            <strong>Super Summary</strong>
+            <small>Estimated contributions</small>
+          </button>
+
+          <button
+            id="export-report-button"
+            class="report-option-card"
+            type="button"
+          >
+            <span aria-hidden="true">⇩</span>
+            <strong>Export Report</strong>
+            <small>Download a PDF summary</small>
+          </button>
+        </section>
+      </section>
+
+
+      <!-- =====================================================
+           SETTINGS SCREEN
+      ====================================================== -->
+      <section
+        id="settings-screen"
+        class="app-screen"
+        aria-labelledby="settings-screen-title"
+        data-screen="settings"
+        hidden
+      >
+        <div class="screen-header">
+          <div>
+            <p class="screen-eyebrow">App configuration</p>
+            <h1 id="settings-screen-title">Settings</h1>
+          </div>
+        </div>
+
+        <section
+          class="settings-group"
+          aria-labelledby="employment-settings-title"
+        >
+          <h2 id="employment-settings-title">Employment</h2>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="employers-modal"
+          >
+            <span>
+              <strong>Employers</strong>
+              <small>Manage jobs and payroll details</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="pay-rates-modal"
+          >
+            <span>
+              <strong>Pay Rates</strong>
+              <small>Base rates, classifications and casual loading</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="penalty-rates-modal"
+          >
+            <span>
+              <strong>Penalty Rates</strong>
+              <small>Weekends, nights and public holidays</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="overtime-settings-modal"
+          >
+            <span>
+              <strong>Overtime Rules</strong>
+              <small>Daily, weekly and roster-based overtime</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+        </section>
+
+        <section
+          class="settings-group"
+          aria-labelledby="tax-settings-title"
+        >
+          <h2 id="tax-settings-title">Tax and Super</h2>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="tax-settings-modal"
+          >
+            <span>
+              <strong>Tax Settings</strong>
+              <small>Tax-free threshold and multiple-job settings</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="super-settings-modal"
+          >
+            <span>
+              <strong>Superannuation</strong>
+              <small>Contribution rates and fund settings</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+        </section>
+
+        <section
+          class="settings-group"
+          aria-labelledby="app-settings-title"
+        >
+          <h2 id="app-settings-title">Application</h2>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="appearance-modal"
+          >
+            <span>
+              <strong>Appearance</strong>
+              <small>Theme, display and accessibility</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="backup-modal"
+          >
+            <span>
+              <strong>Backup and Sync</strong>
+              <small>Cloud backup and data recovery</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="data-management-modal"
+          >
+            <span>
+              <strong>Data Management</strong>
+              <small>Export, import or delete app data</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-open-modal="about-modal"
+          >
+            <span>
+              <strong>About Pay Tracker</strong>
+              <small>Version, privacy and legal information</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+        </section>
+      </section>
     </main>
 
-    <<script src="config.js?v=1"></script>
-<script src="storage.js?v=1"></script>
-<script src="payroll.js?v=1"></script>
-<script src="settings.js?v=1"></script>
-<script src="app.js?v=5"></script>
 
+    <!-- =======================================================
+         BOTTOM NAVIGATION
+    ======================================================== -->
+    <nav class="bottom-navigation" aria-label="Main navigation">
+      <button
+        class="bottom-navigation-item is-active"
+        type="button"
+        data-route="home"
+        aria-current="page"
+      >
+        <span class="bottom-navigation-icon" aria-hidden="true">⌂</span>
+        <span>Home</span>
+      </button>
+
+      <button
+        class="bottom-navigation-item"
+        type="button"
+        data-route="shifts"
+      >
+        <span class="bottom-navigation-icon" aria-hidden="true">◷</span>
+        <span>Shifts</span>
+      </button>
+
+      <button
+        class="bottom-navigation-item"
+        type="button"
+        data-route="payroll"
+      >
+        <span class="bottom-navigation-icon" aria-hidden="true">$</span>
+        <span>Payroll</span>
+      </button>
+
+      <button
+        class="bottom-navigation-item"
+        type="button"
+        data-route="reports"
+      >
+        <span class="bottom-navigation-icon" aria-hidden="true">▥</span>
+        <span>Reports</span>
+      </button>
+
+      <button
+        class="bottom-navigation-item"
+        type="button"
+        data-route="settings"
+      >
+        <span class="bottom-navigation-icon" aria-hidden="true">⚙</span>
+        <span>Settings</span>
+      </button>
+    </nav>
+  </div>
+
+
+  <!-- =========================================================
+       ADD SHIFT MODAL
+  ========================================================== -->
+  <dialog id="add-shift-modal" class="app-modal">
+    <form id="add-shift-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close add shift form"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">New entry</p>
+          <h2>Add Shift</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <div class="form-field">
+          <label for="shift-employer">Employer</label>
+
+          <select id="shift-employer" name="employer" required>
+            <option value="">Select an employer</option>
+            <option value="seaworld">SeaWorld</option>
+            <option value="queensland-health">
+              Queensland Health
+            </option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="shift-date">Date</label>
+
+          <input
+            id="shift-date"
+            name="date"
+            type="date"
+            required
+          >
+        </div>
+
+        <div class="form-row">
+          <div class="form-field">
+            <label for="shift-start-time">Start</label>
+
+            <input
+              id="shift-start-time"
+              name="startTime"
+              type="time"
+              required
+            >
+          </div>
+
+          <div class="form-field">
+            <label for="shift-finish-time">Finish</label>
+
+            <input
+              id="shift-finish-time"
+              name="finishTime"
+              type="time"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="form-field">
+          <label for="shift-break-minutes">Unpaid Break</label>
+
+          <select
+            id="shift-break-minutes"
+            name="breakMinutes"
+          >
+            <option value="0">No unpaid break</option>
+            <option value="15">15 minutes</option>
+            <option value="20">20 minutes</option>
+            <option value="30">30 minutes</option>
+            <option value="45">45 minutes</option>
+            <option value="60">60 minutes</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="shift-notes">
+            Notes
+            <span class="optional-label">Optional</span>
+          </label>
+
+          <textarea
+            id="shift-notes"
+            name="notes"
+            rows="4"
+            maxlength="500"
+            placeholder="Add shift details, allowances or notes"
+          ></textarea>
+        </div>
+
+        <div
+          id="shift-calculation-preview"
+          class="calculation-preview"
+          aria-live="polite"
+        >
+          <div>
+            <span>Paid hours</span>
+            <strong id="preview-paid-hours">0.00 hrs</strong>
+          </div>
+
+          <div>
+            <span>Estimated gross pay</span>
+            <strong id="preview-gross-pay">$0.00</strong>
+          </div>
+        </div>
+
+        <p
+          id="add-shift-error"
+          class="form-error"
+          role="alert"
+          hidden
+        ></p>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Shift
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       SHIFT DETAILS MODAL
+  ========================================================== -->
+  <dialog id="shift-details-modal" class="app-modal">
+    <article class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close shift details"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Shift record</p>
+          <h2>Shift Details</h2>
+        </div>
+
+        <button
+          id="edit-shift-button"
+          class="text-button"
+          type="button"
+        >
+          Edit
+        </button>
+      </header>
+
+      <div id="shift-details-content" class="modal-body"></div>
+
+      <footer class="modal-footer">
+        <button
+          id="delete-shift-button"
+          class="danger-button"
+          type="button"
+        >
+          Delete Shift
+        </button>
+
+        <button
+          class="primary-button"
+          type="button"
+          data-close-modal
+        >
+          Done
+        </button>
+      </footer>
+    </article>
+  </dialog>
+
+
+  <!-- =========================================================
+       SCAN PAYSLIP MODAL
+  ========================================================== -->
+  <dialog id="scan-payslip-modal" class="app-modal">
+    <form id="scan-payslip-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close payslip scanner"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Payslip verification</p>
+          <h2>Scan Payslip</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <div class="upload-area">
+          <div class="upload-area-icon" aria-hidden="true">▤</div>
+
+          <h3>Upload your payslip</h3>
+
+          <p>
+            Select a photo or PDF so Pay Tracker can compare it with your
+            recorded shifts.
+          </p>
+
+          <label class="primary-button" for="payslip-file-input">
+            Choose File
+          </label>
+
+          <input
+            id="payslip-file-input"
+            name="payslip"
+            type="file"
+            accept="image/*,.pdf,application/pdf"
+            hidden
+          >
+
+          <p id="selected-payslip-file">
+            No file selected
+          </p>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button
+          id="analyse-payslip-button"
+          class="primary-button"
+          type="submit"
+          disabled
+        >
+          Analyse Payslip
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       EMPLOYER DETAILS MODAL
+  ========================================================== -->
+  <dialog id="employer-details-modal" class="app-modal">
+    <article class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close employer details"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Employer overview</p>
+          <h2 id="employer-details-title">Employer</h2>
+        </div>
+
+        <button
+          id="edit-employer-button"
+          class="text-button"
+          type="button"
+        >
+          Edit
+        </button>
+      </header>
+
+      <div id="employer-details-content" class="modal-body"></div>
+
+      <footer class="modal-footer">
+        <button
+          class="primary-button"
+          type="button"
+          data-close-modal
+        >
+          Done
+        </button>
+      </footer>
+    </article>
+  </dialog>
+
+
+  <!-- =========================================================
+       EMPLOYERS SETTINGS MODAL
+  ========================================================== -->
+  <dialog id="employers-modal" class="app-modal">
+    <article class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close employer settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Employment settings</p>
+          <h2>Employers</h2>
+        </div>
+
+        <button
+          id="add-employer-button"
+          class="text-button"
+          type="button"
+          data-open-modal="add-employer-modal"
+        >
+          Add
+        </button>
+      </header>
+
+      <div class="modal-body">
+        <div id="employer-settings-list" class="settings-list">
+          <button
+            class="settings-row"
+            type="button"
+            data-edit-employer="seaworld"
+          >
+            <span>
+              <strong>SeaWorld</strong>
+              <small>Job 1 · Casual</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+
+          <button
+            class="settings-row"
+            type="button"
+            data-edit-employer="queensland-health"
+          >
+            <span>
+              <strong>Queensland Health</strong>
+              <small>Job 2 · Casual</small>
+            </span>
+
+            <span aria-hidden="true">›</span>
+          </button>
+        </div>
+      </div>
+    </article>
+  </dialog>
+
+
+  <!-- =========================================================
+       ADD OR EDIT EMPLOYER MODAL
+  ========================================================== -->
+  <dialog id="add-employer-modal" class="app-modal">
+    <form id="employer-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close employer form"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Employment details</p>
+          <h2 id="employer-form-title">Add Employer</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <input
+          id="employer-id"
+          name="employerId"
+          type="hidden"
+        >
+
+        <div class="form-field">
+          <label for="employer-name">Employer Name</label>
+
+          <input
+            id="employer-name"
+            name="employerName"
+            type="text"
+            autocomplete="organization"
+            required
+          >
+        </div>
+
+        <div class="form-field">
+          <label for="employer-job-number">Job Position</label>
+
+          <select
+            id="employer-job-number"
+            name="jobNumber"
+            required
+          >
+            <option value="1">Job 1</option>
+            <option value="2">Job 2</option>
+            <option value="3">Job 3</option>
+            <option value="4">Job 4</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="employment-type">Employment Type</label>
+
+          <select
+            id="employment-type"
+            name="employmentType"
+            required
+          >
+            <option value="casual">Casual</option>
+            <option value="part-time">Part-time</option>
+            <option value="full-time">Full-time</option>
+            <option value="contractor">Contractor</option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="employer-base-rate">Base Hourly Rate</label>
+
+          <div class="currency-input">
+            <span aria-hidden="true">$</span>
+
+            <input
+              id="employer-base-rate"
+              name="baseRate"
+              type="number"
+              min="0"
+              step="0.01"
+              inputmode="decimal"
+              required
+            >
+          </div>
+        </div>
+
+        <fieldset class="form-fieldset">
+          <legend>Tax Settings</legend>
+
+          <label class="checkbox-row">
+            <input
+              id="employer-tax-free-threshold"
+              name="taxFreeThreshold"
+              type="checkbox"
+            >
+
+            <span>
+              <strong>Claim tax-free threshold</strong>
+              <small>
+                Usually claimed from only one employer.
+              </small>
+            </span>
+          </label>
+
+          <label class="checkbox-row">
+            <input
+              id="employer-withholds-tax"
+              name="withholdsTax"
+              type="checkbox"
+              checked
+            >
+
+            <span>
+              <strong>Employer withholds tax</strong>
+              <small>
+                Include this employer in withholding calculations.
+              </small>
+            </span>
+          </label>
+        </fieldset>
+
+        <p
+          id="employer-form-error"
+          class="form-error"
+          role="alert"
+          hidden
+        ></p>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Employer
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       PAY RATE SETTINGS MODAL
+  ========================================================== -->
+  <dialog id="pay-rates-modal" class="app-modal">
+    <form id="pay-rates-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close pay rate settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Payroll configuration</p>
+          <h2>Pay Rates</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div id="pay-rate-settings-content" class="modal-body"></div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Rates
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       PENALTY RATE SETTINGS MODAL
+  ========================================================== -->
+  <dialog id="penalty-rates-modal" class="app-modal">
+    <form id="penalty-rates-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close penalty rate settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Payroll configuration</p>
+          <h2>Penalty Rates</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div id="penalty-rate-settings-content" class="modal-body"></div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Penalties
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       OVERTIME SETTINGS MODAL
+  ========================================================== -->
+  <dialog id="overtime-settings-modal" class="app-modal">
+    <form id="overtime-settings-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close overtime settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Payroll configuration</p>
+          <h2>Overtime Rules</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div id="overtime-settings-content" class="modal-body"></div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Rules
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       TAX SETTINGS MODAL
+  ========================================================== -->
+  <dialog id="tax-settings-modal" class="app-modal">
+    <form id="tax-settings-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close tax settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Tax configuration</p>
+          <h2>Tax Settings</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <div class="information-banner">
+          <span class="information-banner-icon" aria-hidden="true">i</span>
+
+          <p>
+            Pay Tracker estimates tax across all jobs and compares that amount
+            with the tax withheld by each employer.
+          </p>
+        </div>
+
+        <div class="form-field">
+          <label for="tax-residency-status">Residency Status</label>
+
+          <select
+            id="tax-residency-status"
+            name="residencyStatus"
+          >
+            <option value="resident">
+              Australian resident for tax purposes
+            </option>
+
+            <option value="foreign-resident">
+              Foreign resident
+            </option>
+
+            <option value="working-holiday-maker">
+              Working holiday maker
+            </option>
+          </select>
+        </div>
+
+        <div class="form-field">
+          <label for="tax-pay-frequency">Primary Pay Frequency</label>
+
+          <select
+            id="tax-pay-frequency"
+            name="payFrequency"
+          >
+            <option value="weekly">Weekly</option>
+            <option value="fortnightly" selected>Fortnightly</option>
+            <option value="monthly">Monthly</option>
+          </select>
+        </div>
+
+        <label class="checkbox-row">
+          <input
+            id="tax-has-help-debt"
+            name="hasHelpDebt"
+            type="checkbox"
+          >
+
+          <span>
+            <strong>HELP or student loan debt</strong>
+            <small>
+              Include compulsory repayment estimates.
+            </small>
+          </span>
+        </label>
+
+        <label class="checkbox-row">
+          <input
+            id="tax-has-medicare-exemption"
+            name="hasMedicareExemption"
+            type="checkbox"
+          >
+
+          <span>
+            <strong>Medicare levy exemption</strong>
+            <small>
+              Apply an eligible full or partial exemption.
+            </small>
+          </span>
+        </label>
+
+        <label class="checkbox-row">
+          <input
+            id="tax-extra-withholding-enabled"
+            name="extraWithholdingEnabled"
+            type="checkbox"
+          >
+
+          <span>
+            <strong>Track extra withholding</strong>
+            <small>
+              Record additional tax withheld from a nominated employer.
+            </small>
+          </span>
+        </label>
+
+        <div class="form-field">
+          <label for="tax-extra-withholding-amount">
+            Extra Withholding Per Fortnight
+          </label>
+
+          <div class="currency-input">
+            <span aria-hidden="true">$</span>
+
+            <input
+              id="tax-extra-withholding-amount"
+              name="extraWithholdingAmount"
+              type="number"
+              min="0"
+              step="0.01"
+              inputmode="decimal"
+              value="0.00"
+            >
+          </div>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Tax Settings
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       SUPER SETTINGS MODAL
+  ========================================================== -->
+  <dialog id="super-settings-modal" class="app-modal">
+    <form id="super-settings-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close superannuation settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Superannuation configuration</p>
+          <h2>Superannuation</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div id="super-settings-content" class="modal-body"></div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Super Settings
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       APPEARANCE MODAL
+  ========================================================== -->
+  <dialog id="appearance-modal" class="app-modal">
+    <form id="appearance-form" class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close appearance settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Display settings</p>
+          <h2>Appearance</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <fieldset class="form-fieldset">
+          <legend>Theme</legend>
+
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="theme"
+              value="system"
+              checked
+            >
+            <span>Use device setting</span>
+          </label>
+
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="theme"
+              value="light"
+            >
+            <span>Light</span>
+          </label>
+
+          <label class="radio-row">
+            <input
+              type="radio"
+              name="theme"
+              value="dark"
+            >
+            <span>Dark</span>
+          </label>
+        </fieldset>
+
+        <label class="checkbox-row">
+          <input
+            id="appearance-reduced-motion"
+            name="reducedMotion"
+            type="checkbox"
+          >
+
+          <span>
+            <strong>Reduce motion</strong>
+            <small>Limit animated effects and transitions.</small>
+          </span>
+        </label>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="secondary-button"
+          type="button"
+          data-close-modal
+        >
+          Cancel
+        </button>
+
+        <button class="primary-button" type="submit">
+          Save Appearance
+        </button>
+      </footer>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       BACKUP MODAL
+  ========================================================== -->
+  <dialog id="backup-modal" class="app-modal">
+    <article class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close backup settings"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Data protection</p>
+          <h2>Backup and Sync</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <div class="feature-placeholder">
+          <div class="feature-placeholder-icon" aria-hidden="true">☁</div>
+
+          <h3>Cloud backup</h3>
+
+          <p>
+            Secure account sign-in and cloud synchronisation will be connected
+            when Firebase is added.
+          </p>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="primary-button"
+          type="button"
+          data-close-modal
+        >
+          Done
+        </button>
+      </footer>
+    </article>
+  </dialog>
+
+
+  <!-- =========================================================
+       DATA MANAGEMENT MODAL
+  ========================================================== -->
+  <dialog id="data-management-modal" class="app-modal">
+    <article class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close data management"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Application data</p>
+          <h2>Data Management</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <button id="export-data-button" class="settings-row" type="button">
+          <span>
+            <strong>Export App Data</strong>
+            <small>Download a backup of your shifts and settings</small>
+          </span>
+
+          <span aria-hidden="true">⇩</span>
+        </button>
+
+        <button id="import-data-button" class="settings-row" type="button">
+          <span>
+            <strong>Import App Data</strong>
+            <small>Restore a previously exported backup</small>
+          </span>
+
+          <span aria-hidden="true">⇧</span>
+        </button>
+
+        <input
+          id="import-data-file"
+          type="file"
+          accept=".json,application/json"
+          hidden
+        >
+
+        <button id="clear-shifts-button" class="settings-row" type="button">
+          <span>
+            <strong>Delete All Shifts</strong>
+            <small>Remove every saved shift from this device</small>
+          </span>
+
+          <span aria-hidden="true">×</span>
+        </button>
+
+        <button id="reset-app-button" class="settings-row danger-row" type="button">
+          <span>
+            <strong>Reset Pay Tracker</strong>
+            <small>Delete shifts, employers and all settings</small>
+          </span>
+
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+    </article>
+  </dialog>
+
+
+  <!-- =========================================================
+       ABOUT MODAL
+  ========================================================== -->
+  <dialog id="about-modal" class="app-modal">
+    <article class="modal-panel">
+      <header class="modal-header">
+        <button
+          class="modal-close-button"
+          type="button"
+          aria-label="Close about information"
+          data-close-modal
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+
+        <div>
+          <p class="modal-eyebrow">Application information</p>
+          <h2>About Pay Tracker</h2>
+        </div>
+
+        <div class="modal-header-spacer" aria-hidden="true"></div>
+      </header>
+
+      <div class="modal-body">
+        <div class="about-app">
+          <div class="about-app-logo" aria-hidden="true">$</div>
+
+          <h3>Pay Tracker</h3>
+          <p>Your work. Your pay. Your time.</p>
+          <p>Version 1.0.0</p>
+        </div>
+
+        <div class="information-banner">
+          <span class="information-banner-icon" aria-hidden="true">i</span>
+
+          <p>
+            Pay calculations and tax estimates are provided as a guide.
+            Official payslips, employment agreements and professional tax
+            advice remain the authoritative sources.
+          </p>
+        </div>
+      </div>
+
+      <footer class="modal-footer">
+        <button
+          class="primary-button"
+          type="button"
+          data-close-modal
+        >
+          Done
+        </button>
+      </footer>
+    </article>
+  </dialog>
+
+
+  <!-- =========================================================
+       CONFIRMATION MODAL
+  ========================================================== -->
+  <dialog id="confirmation-modal" class="confirmation-modal">
+    <form method="dialog" class="confirmation-panel">
+      <div
+        id="confirmation-icon"
+        class="confirmation-icon"
+        aria-hidden="true"
+      >
+        !
+      </div>
+
+      <h2 id="confirmation-title">Are you sure?</h2>
+
+      <p id="confirmation-message">
+        This action cannot be undone.
+      </p>
+
+      <div class="confirmation-actions">
+        <button
+          id="confirmation-cancel-button"
+          class="secondary-button"
+          type="button"
+          value="cancel"
+        >
+          Cancel
+        </button>
+
+        <button
+          id="confirmation-confirm-button"
+          class="danger-button"
+          type="button"
+          value="confirm"
+        >
+          Confirm
+        </button>
+      </div>
+    </form>
+  </dialog>
+
+
+  <!-- =========================================================
+       TOAST NOTIFICATIONS
+  ========================================================== -->
+  <div
+    id="toast-container"
+    class="toast-container"
+    aria-live="polite"
+    aria-atomic="true"
+  ></div>
+
+
+  <!-- =========================================================
+       JAVASCRIPT FILES
+  ========================================================== -->
+  <script src="config.js"></script>
+  <script src="storage.js"></script>
+  <script src="payroll.js"></script>
+  <script src="settings.js"></script>
+  <script src="app.js"></script>
 </body>
 </html>
