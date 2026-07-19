@@ -10,7 +10,7 @@
 
     <title>Pay Tracker</title>
 
-    <link rel="stylesheet" href="styles.css?v=4">
+    <link rel="stylesheet" href="styles.css?v=6">
 </head>
 
 <body>
@@ -30,8 +30,12 @@
 
         <section class="summary-card">
             <p class="section-label">Current fortnight</p>
-            <h2>$0.00</h2>
-            <p class="summary-description">Estimated gross pay</p>
+
+            <h2 id="total-pay">$0.00</h2>
+
+            <p class="summary-description">
+                Estimated gross pay
+            </p>
         </section>
 
         <section class="employer-section">
@@ -40,19 +44,29 @@
             <article class="employer-card">
                 <div class="employer-details">
                     <h3>SeaWorld</h3>
-                    <p>No shifts added</p>
+
+                    <p id="seaworld-summary">
+                        No shifts added
+                    </p>
                 </div>
 
-                <strong>$0.00</strong>
+                <strong id="seaworld-total">
+                    $0.00
+                </strong>
             </article>
 
             <article class="employer-card">
                 <div class="employer-details">
                     <h3>Queensland Health</h3>
-                    <p>No shifts added</p>
+
+                    <p id="health-summary">
+                        No shifts added
+                    </p>
                 </div>
 
-                <strong>$0.00</strong>
+                <strong id="health-total">
+                    $0.00
+                </strong>
             </article>
         </section>
 
@@ -69,6 +83,7 @@
             class="shift-form-section hidden"
         >
             <div class="form-card">
+
                 <div class="form-heading">
                     <div>
                         <p class="section-label">New shift</p>
@@ -87,31 +102,46 @@
 
                 <form id="shift-form">
 
-                    <label for="employer">
-                        Employer
-                    </label>
+                    <div class="form-field">
+                        <label for="employer">
+                            Employer
+                        </label>
 
-                    <select id="employer" name="employer" required>
-                        <option value="">Select employer</option>
-                        <option value="seaworld">SeaWorld</option>
-                        <option value="queensland-health">
-                            Queensland Health
-                        </option>
-                    </select>
+                        <select
+                            id="employer"
+                            name="employer"
+                            required
+                        >
+                            <option value="">
+                                Select employer
+                            </option>
 
-                    <label for="shift-date">
-                        Date
-                    </label>
+                            <option value="seaworld">
+                                SeaWorld
+                            </option>
 
-                    <input
-                        id="shift-date"
-                        name="shiftDate"
-                        type="date"
-                        required
-                    >
+                            <option value="queensland-health">
+                                Queensland Health
+                            </option>
+                        </select>
+                    </div>
+
+                    <div class="form-field">
+                        <label for="shift-date">
+                            Date
+                        </label>
+
+                        <input
+                            id="shift-date"
+                            name="shiftDate"
+                            type="date"
+                            required
+                        >
+                    </div>
 
                     <div class="time-grid">
-                        <div>
+
+                        <div class="form-field">
                             <label for="start-time">
                                 Start time
                             </label>
@@ -124,7 +154,7 @@
                             >
                         </div>
 
-                        <div>
+                        <div class="form-field">
                             <label for="finish-time">
                                 Finish time
                             </label>
@@ -136,23 +166,45 @@
                                 required
                             >
                         </div>
+
                     </div>
 
-                    <label for="break-minutes">
-                        Unpaid break
-                    </label>
+                    <div class="form-field">
+                        <label for="break-minutes">
+                            Unpaid break
+                        </label>
 
-                    <select
-                        id="break-minutes"
-                        name="breakMinutes"
-                        required
-                    >
-                        <option value="0">No break</option>
-                        <option value="15">15 minutes</option>
-                        <option value="30">30 minutes</option>
-                        <option value="45">45 minutes</option>
-                        <option value="60">60 minutes</option>
-                    </select>
+                        <select
+                            id="break-minutes"
+                            name="breakMinutes"
+                            required
+                        >
+                            <option value="0">
+                                No break
+                            </option>
+
+                            <option value="15">
+                                15 minutes
+                            </option>
+
+                            <option value="30">
+                                30 minutes
+                            </option>
+
+                            <option value="45">
+                                45 minutes
+                            </option>
+
+                            <option value="60">
+                                60 minutes
+                            </option>
+                        </select>
+                    </div>
+
+                    <p
+                        id="form-message"
+                        class="form-message hidden"
+                    ></p>
 
                     <button
                         class="save-shift-button"
@@ -165,9 +217,31 @@
             </div>
         </section>
 
+        <section class="recent-shifts-section">
+            <div class="recent-shifts-heading">
+                <h2 class="section-title">
+                    Recent Shifts
+                </h2>
+
+                <button
+                    id="clear-shifts-button"
+                    class="clear-button hidden"
+                    type="button"
+                >
+                    Clear all
+                </button>
+            </div>
+
+            <div id="shift-list">
+                <div class="empty-state">
+                    <p>No shifts have been saved yet.</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <script src="app.js?v=1"></script>
+    <script src="app.js?v=3"></script>
 
 </body>
 </html>
