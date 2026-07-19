@@ -1,5 +1,10 @@
 const STORAGE_KEY = "payTrackerShifts";
 
+const PAY_RATES = {
+    seaworld: 35.00,
+    "queensland-health": 46.98
+};
+
 const openShiftFormButton =
     document.getElementById("open-shift-form");
 
@@ -30,25 +35,38 @@ const seaworldSummary =
 const healthSummary =
     document.getElementById("health-summary");
 
+const seaworldTotal =
+    document.getElementById("seaworld-total");
+
+const healthTotal =
+    document.getElementById("health-total");
+
+const totalPay =
+    document.getElementById("total-pay");
+
 let shifts = loadShifts();
 
 function loadShifts() {
-    const savedShifts = localStorage.getItem(STORAGE_KEY);
+    const savedShifts =
+        localStorage.getItem(STORAGE_KEY);
 
     if (!savedShifts) {
         return [];
     }
 
     try {
-        const parsedShifts = JSON.parse(savedShifts);
+        const parsedShifts =
+            JSON.parse(savedShifts);
 
-        if (Array.isArray(parsedShifts)) {
-            return parsedShifts;
-        }
-
-        return [];
+        return Array.isArray(parsedShifts)
+            ? parsedShifts
+            : [];
     } catch (error) {
-        console.error("Could not load saved shifts.", error);
+        console.error(
+            "Could not load saved shifts.",
+            error
+        );
+
         return [];
     }
 }
@@ -67,15 +85,18 @@ function setTodayAsDefaultDate() {
 
     const today = new Date();
 
-    const year = today.getFullYear();
+    const year =
+        today.getFullYear();
 
-    const month = String(
-        today.getMonth() + 1
-    ).padStart(2, "0");
+    const month =
+        String(
+            today.getMonth() + 1
+        ).padStart(2, "0");
 
-    const day = String(
-        today.getDate()
-    ).padStart(2, "0");
+    const day =
+        String(
+            today.getDate()
+        ).padStart(2, "0");
 
     shiftDateInput.value =
         `${year}-${month}-${day}`;
@@ -98,25 +119,31 @@ function closeShiftForm() {
     hideFormMessage();
 }
 
-function showFormMessage(message, isError = false) {
+function showFormMessage(
+    message,
+    isError = false
+) {
     formMessage.textContent = message;
 
     formMessage.classList.remove("hidden");
-    formMessage.classList.toggle("error", isError);
+
+    formMessage.classList.toggle(
+        "error",
+        isError
+    );
 }
 
 function hideFormMessage() {
     formMessage.textContent = "";
 
     formMessage.classList.add("hidden");
+
     formMessage.classList.remove("error");
 }
 
 function convertTimeToMinutes(timeValue) {
-    const parts = timeValue.split(":");
-
-    const hours = Number(parts[0]);
-    const minutes = Number(parts[1]);
+    const [hours, minutes] =
+        timeValue.split(":").map(Number);
 
     return (hours * 60) + minutes;
 }
@@ -144,11 +171,28 @@ function calculateShiftHours(
     return totalMinutes / 60;
 }
 
+function calculateShiftPay(shift) {
+    const hourlyRate =
+        PAY_RATES[shift.employer] || 0;
+
+    return shift.hours * hourlyRate;
+}
+
 function formatHours(hours) {
     const roundedHours =
         Math.round(hours * 100) / 100;
 
     return `${roundedHours} hrs`;
+}
+
+function formatMoney(amount) {
+    return new Intl.NumberFormat(
+        "en-AU",
+        {
+            style: "currency",
+            currency: "AUD"
+        }
+    ).format(amount);
 }
 
 function formatDate(dateValue) {
@@ -167,13 +211,14 @@ function formatDate(dateValue) {
 }
 
 function formatTime(timeValue) {
-    const parts = timeValue.split(":");
+    const [hours, minutes] =
+        timeValue.split(":").map(Number);
 
     const date = new Date();
 
     date.setHours(
-        Number(parts[0]),
-        Number(parts[1]),
+        hours,
+        minutes,
         0,
         0
     );
@@ -192,67 +237,93 @@ function getEmployerName(employerValue) {
         return "SeaWorld";
     }
 
-    if (employerValue === "queensland-health") {
+    if (
+        employerValue ===
+        "queensland-health"
+    ) {
         return "Queensland Health";
     }
 
     return "Unknown employer";
 }
 
-function updateEmployerSummaries() {
-    const seaworldShifts =
-        shifts.filter(
-            shift => shift.employer === "seaworld"
-        );
-
-    const healthShifts =
+function getEmployerData(employerValue) {
+    const employerShifts =
         shifts.filter(
             shift =>
                 shift.employer ===
-                "queensland-health"
+                employerValue
         );
 
-    const seaworldHours =
-        seaworldShifts.reduce(
+    const hours =
+        employerShifts.reduce(
             (total, shift) =>
                 total + shift.hours,
             0
         );
 
-    const healthHours =
-        healthShifts.reduce(
+    const pay =
+        employerShifts.reduce(
             (total, shift) =>
-                total + shift.hours,
+                total +
+                calculateShiftPay(shift),
             0
         );
 
-    if (seaworldShifts.length === 0) {
+    return {
+        shifts: employerShifts,
+        hours,
+        pay
+    };
+}
+
+function updateDashboard() {
+    const seaworld =
+        getEmployerData("seaworld");
+
+    const health =
+        getEmployerData(
+            "queensland-health"
+        );
+
+    if (seaworld.shifts.length === 0) {
         seaworldSummary.textContent =
             "No shifts added";
     } else {
         seaworldSummary.textContent =
-            `${seaworldShifts.length} shift${
-                seaworldShifts.length === 1
+            `${seaworld.shifts.length} shift${
+                seaworld.shifts.length === 1
                     ? ""
                     : "s"
-            } • ${formatHours(seaworldHours)}`;
+            } • ${formatHours(seaworld.hours)}`;
     }
 
-    if (healthShifts.length === 0) {
+    if (health.shifts.length === 0) {
         healthSummary.textContent =
             "No shifts added";
     } else {
         healthSummary.textContent =
-            `${healthShifts.length} shift${
-                healthShifts.length === 1
+            `${health.shifts.length} shift${
+                health.shifts.length === 1
                     ? ""
                     : "s"
-            } • ${formatHours(healthHours)}`;
+            } • ${formatHours(health.hours)}`;
     }
+
+    seaworldTotal.textContent =
+        formatMoney(seaworld.pay);
+
+    healthTotal.textContent =
+        formatMoney(health.pay);
+
+    totalPay.textContent =
+        formatMoney(
+            seaworld.pay + health.pay
+        );
 }
 
 function renderShifts() {
-    updateEmployerSummaries();
+    updateDashboard();
 
     if (shifts.length === 0) {
         shiftList.innerHTML = `
@@ -261,66 +332,100 @@ function renderShifts() {
             </div>
         `;
 
-        clearShiftsButton.classList.add("hidden");
+        clearShiftsButton.classList.add(
+            "hidden"
+        );
 
         return;
     }
 
-    clearShiftsButton.classList.remove("hidden");
-
-    const sortedShifts = [...shifts].sort(
-        (firstShift, secondShift) =>
-            secondShift.date.localeCompare(
-                firstShift.date
-            )
+    clearShiftsButton.classList.remove(
+        "hidden"
     );
 
-    shiftList.innerHTML = sortedShifts
-        .map(shift => {
-            const breakDescription =
-                shift.breakMinutes === 0
-                    ? "No unpaid break"
-                    : `${shift.breakMinutes}-minute unpaid break`;
+    const sortedShifts =
+        [...shifts].sort(
+            (firstShift, secondShift) =>
+                secondShift.date.localeCompare(
+                    firstShift.date
+                )
+        );
 
-            return `
-                <article class="shift-card">
-                    <div class="shift-card-top">
-                        <div>
-                            <h3>
-                                ${getEmployerName(
-                                    shift.employer
+    shiftList.innerHTML =
+        sortedShifts
+            .map(shift => {
+                const breakDescription =
+                    shift.breakMinutes === 0
+                        ? "No unpaid break"
+                        : `${shift.breakMinutes}-minute unpaid break`;
+
+                const shiftPay =
+                    calculateShiftPay(shift);
+
+                const hourlyRate =
+                    PAY_RATES[
+                        shift.employer
+                    ] || 0;
+
+                return `
+                    <article class="shift-card">
+                        <div class="shift-card-top">
+                            <div>
+                                <h3>
+                                    ${getEmployerName(
+                                        shift.employer
+                                    )}
+                                </h3>
+
+                                <p class="shift-date">
+                                    ${formatDate(
+                                        shift.date
+                                    )}
+                                </p>
+                            </div>
+
+                            <strong class="shift-hours">
+                                ${formatMoney(
+                                    shiftPay
                                 )}
-                            </h3>
-
-                            <p class="shift-date">
-                                ${formatDate(shift.date)}
-                            </p>
+                            </strong>
                         </div>
 
-                        <strong class="shift-hours">
-                            ${formatHours(shift.hours)}
-                        </strong>
-                    </div>
+                        <p class="shift-details">
+                            ${formatTime(
+                                shift.startTime
+                            )}
+                            –
+                            ${formatTime(
+                                shift.finishTime
+                            )}
+                            <br>
 
-                    <p class="shift-details">
-                        ${formatTime(shift.startTime)}
-                        –
-                        ${formatTime(shift.finishTime)}
-                        <br>
-                        ${breakDescription}
-                    </p>
+                            ${formatHours(
+                                shift.hours
+                            )}
 
-                    <button
-                        class="delete-shift-button"
-                        type="button"
-                        data-shift-id="${shift.id}"
-                    >
-                        Delete shift
-                    </button>
-                </article>
-            `;
-        })
-        .join("");
+                            at
+
+                            ${formatMoney(
+                                hourlyRate
+                            )}/hr
+                            <br>
+
+                            ${breakDescription}
+                        </p>
+
+                        <button
+                            class="delete-shift-button"
+                            type="button"
+                            data-shift-id="${shift.id}"
+                        >
+                            Delete shift
+                        </button>
+                    </article>
+                `;
+            })
+            .join("");
 }
 
 function deleteShift(shiftId) {
@@ -366,7 +471,9 @@ shiftForm.addEventListener(
 
         const breakMinutes =
             Number(
-                formData.get("breakMinutes")
+                formData.get(
+                    "breakMinutes"
+                )
             );
 
         const hours =
@@ -418,7 +525,9 @@ shiftForm.addEventListener(
         setTodayAsDefaultDate();
 
         showFormMessage(
-            `Shift saved: ${formatHours(hours)}.`
+            `Shift saved: ${formatHours(
+                hours
+            )}.`
         );
 
         setTimeout(() => {
@@ -439,10 +548,9 @@ shiftList.addEventListener(
             return;
         }
 
-        const shiftId =
-            deleteButton.dataset.shiftId;
-
-        deleteShift(shiftId);
+        deleteShift(
+            deleteButton.dataset.shiftId
+        );
     }
 );
 
